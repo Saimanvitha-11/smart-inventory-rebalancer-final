@@ -1,0 +1,27 @@
+[
+    {
+      "store": "Store A",
+      "products": {
+        "Milk": 10,
+        "Eggs": 30,
+        "Bread": 15
+      }
+    },
+    {
+      "store": "Store B",
+      "products": {
+        "Milk": 40,
+        "Eggs": 15,
+        "Bread": 5
+      }
+    },
+    {
+      "store": "Store C",
+      "products": {
+        "Milk": 2,
+        "Eggs": 20,
+        "Bread": 25
+      }
+    }
+  ]
+  
