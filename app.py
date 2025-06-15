@@ -145,7 +145,7 @@ def reorder_recommendation(inventory, forecast):
 # -------------------------------
 # STREAMLIT UI
 
-st.title("📊 AI-Powered Smart Inventory Optimizer")
+st.title(" AI-Powered Smart Inventory Optimizer")
 st.caption("Developed by Saimanvitha, Manogna and Neha")
  #ADD THE PRICING TABLE RIGHT HERE:
 st.header("💰 Product Pricing Table")
