@@ -167,11 +167,11 @@ with st.expander("About the Project"):
     and sales patterns. It automatically suggests redistribution plans, supplier orders, and calculates profit metrics for better decision-making.
 
     Features:
-    - 🔮 Demand Forecasting using weather & day-of-week
-    - 🚚 Smart Redistribution across stores
-    - 📊 Profitability Analysis (including material cost)
-    - 📦 Supplier Replenishment Suggestions
-    - 🌐 Real-time Weather Integration via OpenWeatherMap API
+    -  Demand Forecasting using weather & day-of-week
+    -  Smart Redistribution across stores
+    -  Profitability Analysis (including material cost)
+    -  Supplier Replenishment Suggestions
+    -  Real-time Weather Integration via OpenWeatherMap API
 
     Developed by: **Saimanvitha, Manogna and Neha**
     """)
