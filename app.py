@@ -185,14 +185,14 @@ st.dataframe(
     use_container_width=True
 )
 
-city = st.text_input("🌦️ Enter City to Fetch Live Weather Data:")
+city = st.text_input(" Enter City to Fetch Live Weather Data:")
 if city:
     temperature = get_weather(city)
     if temperature is None:
-        st.error("❌ Failed to retrieve weather data. Try again.")
+        st.error(" Failed to retrieve weather data. Try again.")
     else:
         weekday = datetime.now().strftime('%A')
-        st.write(f"🌡️ Current Temperature: {temperature}°C  |  📅 Day: {weekday}")
+        st.write(f"🌡️ Current Temperature: {temperature}°C  |   Day: {weekday}")
 
         forecast = forecast_demand(temperature, weekday)
         st.header("📈 Forecasted Demand (Dynamic Prediction)")
