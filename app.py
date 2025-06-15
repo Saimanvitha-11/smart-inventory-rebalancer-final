@@ -19,7 +19,11 @@ warehouse_limits = {
     'Store C': {'Milk': 35, 'Eggs': 45, 'Bread': 50},
 }
 
+# Selling price (revenue)
 prices = {'Milk': 50, 'Eggs': 10, 'Bread': 20}
+# Purchase price (material cost / COGS)
+purchase_prices = {'Milk': 30, 'Eggs': 5, 'Bread': 12}
+
 base_demand = {'Milk': 20, 'Eggs': 25, 'Bread': 30}
 
 transport_cost = {
@@ -107,17 +111,21 @@ def calculate_transfers(inventory, demand):
     return transfers
 
 # -------------------------------
-# PROFIT CALC
+# PROFIT CALC (corrected version)
 def calculate_profit(inventory, demand, transfers):
     revenue = 0
+    material_cost = 0
+
     for store, stock in inventory.items():
         for product, qty in stock.items():
             sold = min(qty, demand[product])
             revenue += sold * prices[product]
+            material_cost += sold * purchase_prices[product]
+
     redistribution_cost = sum(qty * cost for (_, qty, _, _, cost) in transfers)
     holding_cost = sum(qty * 2 for store in inventory.values() for qty in store.values())
-    profit = revenue - redistribution_cost - holding_cost
-    return revenue, redistribution_cost, holding_cost, profit
+    profit = revenue - material_cost - redistribution_cost - holding_cost
+    return revenue, material_cost, redistribution_cost, holding_cost, profit
 
 # -------------------------------
 # AUTO SUPPLIER REPLENISH
@@ -138,7 +146,20 @@ def reorder_recommendation(inventory, forecast):
 # STREAMLIT UI
 
 st.title("📊 AI-Powered Smart Inventory Optimizer")
-st.caption("Developed by Saimanvitha,  Manogna and Neha")
+st.caption("Developed by Saimanvitha, Manogna and Neha")
+ #ADD THE PRICING TABLE RIGHT HERE:
+st.header("💰 Product Pricing Table")
+pricing_df = pd.DataFrame({
+    'Selling Price (₹)': prices,
+    'Purchase Price (₹)': purchase_prices
+})
+st.dataframe(
+    pricing_df
+    .style
+    .set_properties(**{'text-align': 'center'}),
+    use_container_width=True
+)
+
 
 with st.expander("About the Project"):
     st.write("""
@@ -148,13 +169,12 @@ with st.expander("About the Project"):
     Features:
     - 🔮 Demand Forecasting using weather & day-of-week
     - 🚚 Smart Redistribution across stores
-    - 📊 Profitability Analysis
+    - 📊 Profitability Analysis (including material cost)
     - 📦 Supplier Replenishment Suggestions
     - 🌐 Real-time Weather Integration via OpenWeatherMap API
 
     Developed by: **Saimanvitha, Manogna and Neha**
     """)
-
 
 st.header("🗃️ Current Inventory Overview")
 st.dataframe(
@@ -202,13 +222,14 @@ if city:
         else:
             st.success("✅ No redistribution required!")
 
-        revenue, redistribution_cost, holding_cost, profit = calculate_profit(inventory, forecast, transfers)
+        revenue, material_cost, redistribution_cost, holding_cost, profit = calculate_profit(inventory, forecast, transfers)
         st.header("💸 Profitability Summary")
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3, col4, col5 = st.columns(5)
         col1.metric("Revenue", f"₹{revenue}")
-        col2.metric("Redistribution Cost", f"₹{redistribution_cost}")
-        col3.metric("Holding Cost", f"₹{holding_cost}")
-        col4.metric("Profit", f"₹{profit}")
+        col2.metric("Material Cost", f"₹{material_cost}")
+        col3.metric("Redistribution Cost", f"₹{redistribution_cost}")
+        col4.metric("Holding Cost", f"₹{holding_cost}")
+        col5.metric("Profit", f"₹{profit}")
 
         orders = reorder_recommendation(inventory, forecast)
         st.header("📦 Supplier Reorder Recommendations")
